@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<project name="BoxEventHandlerSamplePlugin" default="all" basedir=".">
+	<target name="all" depends="clean,compile,jar,deploy" />
+	
+	<!-- Change the properties below according to your needs -->
+	<property name="extpkgname" value="BoxEventHandlerSamplePlugin" />
+	<property name="packagebase" value="com/ibm/ecm/extension/icmsample/boxeventhandler" />
+	<property name="pluginclass" value="com.ibm.ecm.extension.icmsample.boxeventhandler.BoxEventHandlerSamplePlugin" />
+	<property name="pluginDir" value="./release" />
+	<property name="lib" value="./lib" />
+	
+	<!-- Properties below are supposed to be generated -->
+	<property name="webcontentbase" value="${packagebase}/WebContent" />
+	<property name="buildoutput" value="${basedir}/build" />
+	<property name="buildtemp" value="${buildoutput}/temp" />
+	<property name="compiledbin" value="${buildtemp}/bin" />
+	<property name="compiledwebcontent" value="${buildtemp}/webcontent" />
+
+	<!-- Generic code to build an extensions package -->
+	<path id="customHandler-classpath">
+		<pathelement location="${lib}/navigatorAPI.jar" />
+		<pathelement location="${lib}/Jace.jar" />
+		<pathelement location="${lib}/acmapi.jar" />
+		<pathelement location="${lib}/box-java-sdk-1.0.0.jar" />
+		<pathelement location="${lib}/minimal-json-0.9.3-SNAPSHOT.jar" />
+		<pathelement location="${lib}/ICMBoxPlugin.jar" />
+		<pathelement location="${lib}/ICNTasks.jar" />
+		
+		<pathelement location="${lib}/com.ibm.ws.prereq.commonj-twm.jar" />
+		<pathelement location="${lib}/taskManagerAPI.jar" />
+		<pathelement location="${lib}/taskServiceClient.jar" />
+		<pathelement location="${lib}/icncore-5.3.0-SNAPSHOT.jar" />
+	</path>
+
+	<target name="clean">
+		<delete dir="${buildoutput}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${buildoutput}"/>
+		<mkdir dir="${buildtemp}"/>
+		<mkdir dir="${compiledbin}"/>
+		<mkdir dir="${compiledwebcontent}"/>
+		<javac srcdir="." destdir="${compiledbin}" debug="true" includeantruntime="false">
+			<classpath refid="customHandler-classpath" />
+			<include name="**/*.java" />
+		</javac>
+		<echo>Copying files to compiled directory...</echo>
+		<copy todir="${compiledwebcontent}" >
+			<fileset dir="src">
+				<include name="${webcontentbase}/**" />
+				<exclude name="**/.*ignore" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar">
+		<jar jarfile="${buildoutput}/${extpkgname}.jar" >
+			<fileset dir="${compiledbin}" includes="**/*" />
+			<fileset dir="${compiledwebcontent}" includes="**/*" />
+			<manifest>
+				<attribute name="Plugin-Class" value="${pluginclass}" />
+				<section name="build">
+					<attribute name="Built-By" value="${user.name}" />
+					<attribute name="Build" value="${TODAY}" />
+				</section>
+			</manifest>
+		</jar>
+
+	</target>
+
+	<target name="deploy">
+		<!-- Copy the built plugin into the ./release directory. -->
+		<copy todir="${pluginDir}" >
+			<fileset dir="${buildoutput}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		
+		<!-- Change this directory to match your path to the task manager dropins directory -->
+		<copy todir="C:\IBM\WebSphere\AppServer\profiles\AppSrv02\installedApps\oclv0288Node02Cell\navigator.ear\taskManagerWeb.war\WEB-INF\dropins" >
+			<fileset dir="${buildoutput}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+				
+		<delete dir="${buildoutput}" />
+	</target>
+
+</project>

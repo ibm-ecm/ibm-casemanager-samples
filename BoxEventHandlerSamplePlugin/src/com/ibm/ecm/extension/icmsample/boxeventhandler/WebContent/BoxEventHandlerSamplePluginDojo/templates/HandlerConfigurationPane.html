@@ -1,0 +1,43 @@
+<div class="ecmCommonPropertiesPane" data-dojo-attach-point="containerNode" data-dojo-type="dijit/layout/ContentPane" style="width:100%; height:100%;">
+	<table class="propertyTable">
+		<tbody>
+			<tr>
+				<td class="propertyRowLabel">
+					<span class="ecmLabeledInputFieldRequired">*</span>
+					<label data-dojo-attach-point="solutionLabel" for="${id}_solutionLabel">${messageResource.start_task_handler_solution_label}:</label>
+				</td>
+				<td class="propertyRowValue">
+					<select id="${id}_solSelect" data-dojo-type="dijit/form/FilteringSelect" data-dojo-attach-point="solutionSelect" data-dojo-attach-event="onChange: onSelect" style="width: 100%;">
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="propertyRowLabel">
+					<span class="ecmLabeledInputFieldRequired">*</span>
+					<label data-dojo-attach-point="docClassLabel" for="${id}_docClassLabel">${messageResource.start_task_handler_document_class_label}</label>
+				</td>
+				<td class="propertyRowValue">
+					<select id="${id}_docClassSelect" data-dojo-type="dijit/form/FilteringSelect" data-dojo-attach-point="docClassSelect" style="width:100%;">
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="propertyRowLabel">
+					<span class="ecmLabeledInputFieldRequired">*</span>
+					<label data-dojo-attach-point="folderNameLabel" for="${id}_folderNameLabel">Folder Name to Monitor:</label>
+				</td>
+				<td class="propertyRowValue">
+					<input type="text" id="${id}_folderNameTextBox" name="folderNameTextBox" data-dojo-type="dijit/form/TextBox" data-dojo-attach-point="folderNameTextBox" style="width:100%" />
+				</td>
+			</tr>
+			<tr>
+				<td class="propertyRowLabel">
+					<label data-dojo-attach-point="fileToCaseLabel" for="${id}_fileToCaseLabel">${messageResource.start_task_handler_file_label}:</label>
+				</td>
+				<td class="propertyRowValue">
+					<input type="checkbox" id="${id}_fileToCase" name="fileToCaseCB" data-dojo-type="dijit/form/CheckBox" checked data-dojo-attach-point="fileToCaseEnable" style="width:16px;" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
