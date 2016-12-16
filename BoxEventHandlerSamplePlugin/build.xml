@@ -17,20 +17,17 @@
 	<property name="compiledbin" value="${buildtemp}/bin" />
 	<property name="compiledwebcontent" value="${buildtemp}/webcontent" />
 
-	<!-- Generic code to build an extensions package -->
+	<!-- Find these jars in their respective project installation directories and copy them in a 'lib' directory under this workspace -->
 	<path id="customHandler-classpath">
-		<pathelement location="${lib}/navigatorAPI.jar" />
-		<pathelement location="${lib}/Jace.jar" />
-		<pathelement location="${lib}/acmapi.jar" />
-		<pathelement location="${lib}/box-java-sdk-1.0.0.jar" />
-		<pathelement location="${lib}/minimal-json-0.9.3-SNAPSHOT.jar" />
-		<pathelement location="${lib}/ICMBoxPlugin.jar" />
-		<pathelement location="${lib}/ICNTasks.jar" />
-		
-		<pathelement location="${lib}/com.ibm.ws.prereq.commonj-twm.jar" />
-		<pathelement location="${lib}/taskManagerAPI.jar" />
-		<pathelement location="${lib}/taskServiceClient.jar" />
-		<pathelement location="${lib}/icncore-5.3.0-SNAPSHOT.jar" />
+		<pathelement location="${lib}/navigatorAPI.jar" /> <!-- Available in ICN lib installation directory -->
+		<pathelement location="${lib}/Jace.jar" /> <!-- Available in ICM lib installation directory -->
+		<pathelement location="${lib}/acmapi.jar" /> <!-- Available in ICM lib installation directory -->
+		<pathelement location="${lib}/box-java-sdk.jar" /> <!-- Available in ICN lib installation directory -->
+		<pathelement location="${lib}/minimal-json.jar" /> <!-- Available in ICN lib installation directory -->
+		<pathelement location="${lib}/ICNTasks.jar" /> <!-- Available in ICN Task Manager/lib installation directory -->
+		<pathelement location="${lib}/taskManagerAPI.jar" /> <!-- Available in ICN Task Manager/lib installation directory -->
+		<pathelement location="${lib}/taskServiceClient.jar" /> <!-- Available in ICN Task Manager/lib installation directory -->
+		<pathelement location="${lib}/icncore.jar" /> <!-- Available in ICN installation directory -->
 	</path>
 
 	<target name="clean">

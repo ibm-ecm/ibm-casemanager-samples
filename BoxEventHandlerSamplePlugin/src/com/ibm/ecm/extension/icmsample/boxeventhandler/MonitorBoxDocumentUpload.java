@@ -18,7 +18,6 @@ import com.ibm.casemgmt.api.box.BoxConstants;
 import com.ibm.casemgmt.api.objectref.ObjectStoreReference;
 import com.ibm.casemgmt.intgimpl.CEConstants;
 import com.ibm.casemgmt.intgimpl.messages.Message;
-import com.ibm.ecm.extension.icm.boxevent.services.ListenerConstants;
 import com.ibm.ecm.icm.boxeventhandlers.BaseHandler;
 import com.ibm.ecm.icm.util.P8ConnectionUtil;
 import com.ibm.icm.edc.api.Constants;
@@ -28,7 +27,7 @@ import com.ibm.icm.edc.api.TaskService;
 import com.ibm.json.java.JSONObject;
 
 /**
- * This is a custom Box Event Handler that watches the Box Document Upload event and copies 
+ * This is a sample Box Event Handler that watches the Box Document Upload event and copies 
  * the Box document to the Case if the document was uploaded in a Box sub-folder you specify from the UI.
  */
 public class MonitorBoxDocumentUpload extends BaseHandler {
@@ -47,23 +46,28 @@ public class MonitorBoxDocumentUpload extends BaseHandler {
 	 */
 	public MonitorBoxDocumentUpload(String targetRepositoryId, Logger handlerLogger, JSONObject handlerParameters) {
 		super(targetRepositoryId, handlerLogger, handlerParameters);
-		this.p8DocType = (String) handlerParameters.get(ListenerConstants.JSON_DOCUMENT_CLASS);
-		this.bFileDocToCase = (Boolean) handlerParameters.get(ListenerConstants.JSON_FILE_DOC_TO_CASE);
-		this.solutionName = (String) handlerParameters.get(ListenerConstants.JSON_SOLUTION);
-		this.folderName = (String) handlerParameters.get("folderName");
+		this.p8DocType = (String) handlerParameters.get(EventHandlerConstants.JSON_DOCUMENT_CLASS);
+		this.bFileDocToCase = (Boolean) handlerParameters.get(EventHandlerConstants.JSON_FILE_DOC_TO_CASE);
+		this.solutionName = (String) handlerParameters.get(EventHandlerConstants.JSON_SOLUTION);
+		this.folderName = (String) handlerParameters.get(EventHandlerConstants.JSON_FOLDER_NAME);
 	}
 	
 	@Override
 	/**
 	 * The custom event handler name.
+	 * @return eventHandlerName The custom event handler name.
 	 */
 	public String getName() {
-		return "Monitor Box Document Upload Event Handler";
+		String eventHandlerName = "Monitor Box Document Upload Event Handler";
+		return eventHandlerName;
 	}
 	
 	/**
 	 * Listens for all Box document uploads that occur in the specified folder name from the event handler 
 	 * configuration dialog. If the conditions do not match, then the event does not get processed.
+	 * 
+	 * @param event A Box event
+	 * @return isSupported A boolean indicating whether you want to process the caught Box event 
 	 */
 	@Override
 	public boolean eventSupported(BoxEvent event) {
@@ -107,7 +111,19 @@ public class MonitorBoxDocumentUpload extends BaseHandler {
 		if ((solName != null) && (solName.equalsIgnoreCase(this.solutionName))) {
 			String boxDocId = this.getBoxDocumentId(boxEvent);
 			String boxDocName = this.getBoxDocumentName(boxEvent);
-			scheduleCopyBoxDocumentToCaseTask(boxDocId, boxDocName, caseId);
+			
+			//get a task service
+			TaskService taskService = getTaskService();
+			if (taskService == null) {
+				// Error retrieving a task service
+				logger.logp(Level.SEVERE, CLASS_NAME, functionName, "Error getting task service");
+				return;
+			} else {
+				// Successfully retrieved a task service, now create a task schedule request and then schedule it
+				JSONObject taskRequest = constructTaskScheduleRequest(boxDocId, caseId, boxDocName);
+				JSONObject result = taskService.scheduleTask(null, taskRequest);
+				logger.logp(Level.FINE, CLASS_NAME, functionName, "Result from scheduling a task" + result.toString());
+			}
 		}
 		else
 			logger.logp(Level.FINE, CLASS_NAME, functionName, "Skipping process... Box event occured on different solution. Event solution: " + solName);
@@ -116,35 +132,13 @@ public class MonitorBoxDocumentUpload extends BaseHandler {
 	}
 	
 	// Extra functionality not required by the Base Event Handler. 
-
-	/**
-	 * Schedules a task in the Task Manager service to copy the uploaded Box document to the Case.
-	 * @param boxEvent
-	 * @param caseId
-	 */
-	protected void scheduleCopyBoxDocumentToCaseTask(String boxDocId, String boxDocName, String caseId) {
-		String functionName = "scheduleCopyBoxDoc2Case";
-		logger.logp(Level.FINE, CLASS_NAME, functionName, "Schedule a new task to copy Box document to P8. Box doc Id: " + boxDocId + ",name: " + boxDocName);
-		
-		TaskService taskService = getTaskService();
-		if (taskService == null) {
-			logger.logp(Level.SEVERE, CLASS_NAME, "Error from " + functionName, "Unexpected error");
-			return;
-		}
-		
-		// Create a task schedule request
-		JSONObject taskRequest = constructTaskScheduleRequest(boxDocId, caseId, boxDocName);
-		JSONObject result = taskService.scheduleTask(null, taskRequest);
-		logger.logp(Level.FINE, CLASS_NAME, functionName, "result from schedule task" + result.toString());
-	}
-	
 	/**
 	 * Constructs the task schedule request to copy the Box document to the case.
 	 * 
-	 * @param boxDocId
-	 * @param caseId
-	 * @param boxDocName
-	 * @return
+	 * @param boxDocId The Box document id to copy.
+	 * @param caseId The case id where the Task will copy the Box document to.
+	 * @param boxDocName The Box document display name for logging purposes.
+	 * @return taskRequest The task request JSON to create and start.
 	 */
 	protected JSONObject constructTaskScheduleRequest(String boxDocId, String caseId, String boxDocName) {
 		JSONObject taskRequest = new JSONObject();
@@ -155,7 +149,7 @@ public class MonitorBoxDocumentUpload extends BaseHandler {
 			taskRequest.put(Constants.PARAM_DESCRIPTION, getLocalizedMsg("A0821I.ICM_COPY_BOX_DOC_TASK_DESCRIPTION_CASE", p8DocType));
 		else
 			taskRequest.put(Constants.PARAM_DESCRIPTION, getLocalizedMsg("A0820I.ICM_COPY_BOX_DOC_TASK_DESCRIPTION_P8", p8DocType));
-		taskRequest.put(Constants.PARAM_HANDLER_CLASS_NAME, ListenerConstants.BOX_COPY_TASK_CLASS_ID);
+		taskRequest.put(Constants.PARAM_HANDLER_CLASS_NAME, EventHandlerConstants.BOX_COPY_TASK_CLASS_ID);
 		taskRequest.put(Constants.PARAM_PARENT, "Navigator");
 		taskRequest.put(Constants.PARAM_LOG_LEVEL, Constants.LOG_LEVEL_FINE);
 		
@@ -163,21 +157,21 @@ public class MonitorBoxDocumentUpload extends BaseHandler {
 		taskRequest.put(Constants.PARAM_START_DATE_TIME, new Long(System.currentTimeMillis()));
 		
 		// send task specific parameters.
-		taskRequest.put(ListenerConstants.JSON_CASE_ID, caseId);
-		taskRequest.put(ListenerConstants.JSON_BOX_DOC_ID, boxDocId);
-		taskRequest.put(ListenerConstants.JSON_INITIATION_DOC_TYPE, p8DocType);
-		taskRequest.put(ListenerConstants.JSON_REPOSITORY_ID, targetRepositoryId);
-		taskRequest.put(ListenerConstants.JSON_FILE_DOC_TO_CASE, bFileDocToCase);
+		taskRequest.put(EventHandlerConstants.JSON_CASE_ID, caseId);
+		taskRequest.put(EventHandlerConstants.JSON_BOX_DOC_ID, boxDocId);
+		taskRequest.put(EventHandlerConstants.JSON_INITIATION_DOC_TYPE, p8DocType);
+		taskRequest.put(EventHandlerConstants.JSON_REPOSITORY_ID, targetRepositoryId);
+		taskRequest.put(EventHandlerConstants.JSON_FILE_DOC_TO_CASE, bFileDocToCase);
 		
 		return taskRequest;
 	}
 	
 	/**
-	 * Returns solution name from given case id. 
-	 * Note: This is also to validate the case id making sure it belongs to a solution.
+	 * Retrieves the solution name from given case id. 
+	 * Note: This is also to validate the case id to make sure it belongs to a solution.
 	 * 
-	 * @param caseId
-	 * @return solFolder
+	 * @param caseId The case to retrieve the solution from.
+	 * @return solFolder The name of the solution.
 	 */
 	protected String getSolutionName(String caseId) {
 		String solutionFolder = null;
@@ -190,10 +184,10 @@ public class MonitorBoxDocumentUpload extends BaseHandler {
 	        Folder caseFolder = Factory.Folder.fetchInstance(targetOSRef.fetchCEObject(), new Id(caseId), propertyFilter);
 	        
 	        Folder solFolder = (Folder) caseFolder.getProperties().getObjectValue(CEConstants.PARENT_SOLUTION_PROPERTY_NAME);
-	        solFolder.refresh(new String [] {PropertyNames.FOLDER_NAME});
+	        solFolder.refresh(new String[] {PropertyNames.FOLDER_NAME});
 	        solutionFolder = solFolder.get_FolderName();
 		} catch (Exception ex) {
-			String logMsg =  "Validation error: cannot get solution name from case id:" + caseId;
+			String logMsg =  "Validation error: Cannot get solution name from case id:" + caseId;
 			logger.logp(Level.SEVERE, CLASS_NAME,  logMsg, ex.getLocalizedMessage());
 		} finally {
 			UserContext userCtx = UserContext.get();
