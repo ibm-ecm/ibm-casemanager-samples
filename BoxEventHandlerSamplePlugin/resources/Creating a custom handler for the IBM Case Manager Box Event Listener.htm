@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<!-- saved from url=(0097)file:///private/var/folders/mv/ftmp6711327fyx9llzt6d3r80000gp/T/TemporaryItems/notes/~ni_5470.htm -->
+<html dir="LTR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+
+	<title>Case Manager 5.3.0 - Creating a custom handler for the IBM Case Manager Box Event Listener</title>
+	<meta name="Author" content="">
+</head>
+
+<body><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Arial&#39;;font-size:22pt;"><b>Creating a custom handler for the IBM Case ManagerBox Event Listener</b></span>
+</p><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">You can create a custom handler to process events that are detected by the IBM® Case ManagerBox Event Listener.</span></p>
+<p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Arial&#39;;font-size:18pt;"><b>Before you begin</b></span>
+</p><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">Ensure that you have the following files that are required to compile and build a custom&nbsp;handler:</span>
+
+</p>
+<table width="99" border="1" rules="none" cellspacing="1"><tbody><tr valign="top"><td width="37" style="border-width:1pt;border-style:solid;"><p style="text-align:center;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;"><b>File</b></span></p>
+</td>
+<td width="62" style="border-width:1pt;border-style:solid;"><p style="text-align:center;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;"><b>Description</b></span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="37" style="border-width:1pt;border-style:solid;"><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">ICNTasks.jar</span></p>
+</td>
+<td width="62" style="border-width:1pt;border-style:solid;"><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">This file contains the com.ibm.ecm.icm.boxeventhandlers.BaseHandler that&nbsp;you must extend to create a custom handler.You can find this file in&nbsp;<i>Installation_directory</i>\configure\explodedformat\taskManager\taskManagerWeb\WEB-INF\dropins,&nbsp;where <i>Installation_directory</i> is the directory in which IBM Content Navigator is installed.</span>
+</p><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="37" style="border-width:1pt;border-style:solid;"><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">acmapi.jar</span></p>
+</td>
+<td width="62" style="border-width:1pt;border-style:solid;"><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">This file contains the IBM Case Manager Java API.You can find&nbsp;this file in <i>Installation_directory</i>\CaseAPI\lib, where&nbsp;<i>Installation_directory</i> is the directory in which IBM Case Manager is installed.</span>
+</p><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="37" style="border-width:1pt;border-style:solid;"><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">Box-java-sdk-1.0.0.jar</span></p>
+</td>
+<td width="62" style="border-width:1pt;border-style:solid;"><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">This file contains the Box API.You can find this&nbsp;file in&nbsp;<i>Installation_directory</i>\configure\explodedformat\taskManager\taskManagerWeb\WEB-INF\lib,&nbsp;where <i>Installation_directory</i> is the directory in which IBM Content Navigator is installed.</span>
+</p><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr valign="top">
+<td width="37" style="border-width:1pt;border-style:solid;"><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">Minimal-json-0.9.2-SNAPSHOT.jar</span></p>
+</td>
+<td width="62" style="border-width:1pt;border-style:solid;"><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">This file contains the minimal JSON parser and writer that the Box API uses.You can find this file in&nbsp;<i>Installation_directory</i>\configure\explodedformat\taskManager\taskManagerWeb\WEB-INF\lib,&nbsp;where <i>Installation_directory</i> is the directory in which IBM Content Navigator is installed.</span>
+</p>
+</td>
+</tr>
+</tbody></table>
+<p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Arial&#39;;font-size:18pt;color:#000000;"><b>About this task</b></span>
+</p><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">You can find sample custom event handler plug-ins in the following location: <a href="https://github.com/ibm-ecm/ibm-casemanager-samples" target="_blank">https://github.com/ibm-ecm/ibm-casemanager-samples</a></span>
+</p><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">.</span></p>
+<p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+<span style="font-family:&#39;Arial&#39;;font-size:18pt;color:#000000;"><b>Procedure</b></span>
+</p><ol>
+<li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">Create a Java class that extends the com.ibm.ecm.icm.boxeventhandlers.BaseHandler class that is provided by the IBM Case ManagerBox Event Listener. 
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">This new class must implement the following methods:
+<dl>
+<dt><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">processBoxEvent</span>
+</dt><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">This method is called by the event listener to process an event. </span>
+</dd><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">The&nbsp;processBoxEventmethod takes the following parameters:</span>
+<dl>
+<dt><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">boxEvent</span>
+</dt><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">A Box object that contains detailed information about the&nbsp;event.</span>
+</dd><dt><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">caseID</span>
+</dt><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">A string that contains the identifier of the case in which the event occurred.
+</span></dd></dl>
+</dd><dt><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">eventSupported</span>
+</dt><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">This method is called by the event listener to determine whether the handler supports a specific&nbsp;event. The method returns true if the event is supported.</span>
+</dd><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">The&nbsp;eventSupportedmethod takes the following parameter:</span>
+<dl>
+<dt><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">boxEvent</span>
+</dt><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">A Box object that contains detailed information about the&nbsp;event.
+</span></dd></dl>
+</dd></dl>
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">If your custom class requires any input or configuration from the user, create a Dojo&nbsp;JavaScript class that inherits from the&nbsp;boxeventlistener/eventhandler/configuration/BaseConfigurationPane class that is&nbsp;provided by the event listener. 
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">The new class must implement the following methods:
+<dl>
+<dt><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">getInput</span>
+</dt><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">This method returns a JSON object that contains the configuration information that the user&nbsp;enters.</span>
+</dd><dt><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">setInput</span>
+</dt><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">This method populates and initializes the user interface that is used to collect the user&nbsp;input.</span>
+<p><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">The setInput method takes the following parameter:</span>
+</p><dl>
+<dt><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">inputParam</span>
+</dt><dd><span style="font-family:&#39;Times New Roman&#39;;font-size:12pt;color:#000000;">A JSON object that contains the information that is used to populate the user interface.
+</span></dd></dl>
+</dd></dl>
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">Create an IBM Content Navigator plug-in that includes your compiled&nbsp;Java handler class and, if applicable, your JavaScript configuration class in the plug-in JAR&nbsp;file. For more information, see <a href="http://www.ibm.com/support/knowledgecenter/SSEUEX_3.0.0/com.ibm.developingeuc.doc/eucso000.htm" target="_blank">Creating plug-ins to IBM Content Navigator</a>,
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">Use the IBM Content Navigator administration desktop to add the new&nbsp;plug-in.
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">Deploy your plug-in JAR file into the Task Manager Web-INF/Dropinsdirectory. The location of this directory depends on your application server settings. For example, if&nbsp;you use IBM&nbsp;WebSphere® Application Server, the directory location might be&nbsp;C:\IBM\WebSphere\AppServer\profiles\AppSrv02\installedApps\oclv0288Node02Cell\navigator.ear\taskManagerWeb.war\WEB-INF&nbsp;\ dropins.
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">In the IBM Content Navigator administration desktop, add the new&nbsp;plug-in to the IBM Case Manager administration desktop.
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">Register your custom handler with the IBM Case ManagerBox Event Listener plug-in. 
+<ol type="a">
+<li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">On the Configuration tab for the event listener, click&nbsp;Register.
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">Complete the Custom Event Handler Registration dialog box, and click&nbsp;OK.
+</li></ol>
+</li><li style="font-family:&#39;Times New Roman&#39;;font-size:12pt;">In task manager, configure the IBM Case ManagerBox Event Listener and select your custom handler. 
+</li></ol>
+
+<p></p><p style="text-align:left;margin-top:0.00in;margin-bottom:0.00in;">
+&nbsp;</p>
+
+
+
+</body></html>

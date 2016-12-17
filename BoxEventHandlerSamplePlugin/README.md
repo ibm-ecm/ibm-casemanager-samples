@@ -11,3 +11,6 @@ This sample is a custom Box Event Handler that watches for Box document upload e
 
 - Build and deploy our sample Box event handler.pdf
   Detailed instructions on how to build and deploy our sample Box event handler
+
+- Creating a custom handler for the IBM Case Manager Box Event Listener.htm
+  Instructions on how to develop your own Box Event Handler 
