@@ -4,6 +4,7 @@ This sample is a custom Box Event Handler that watches for Box document upload e
 
 ##### Resources included:
 - BoxEventHandlerSamplePlugin.jar
+
   The sample plugin
 
 - Sample_Box_Event_Handler_Solution_solution.zip
