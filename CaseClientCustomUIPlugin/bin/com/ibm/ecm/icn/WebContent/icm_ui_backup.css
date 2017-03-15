@@ -1,0 +1,152 @@
+.navLayoutRefreshTheme .icmvnext .dijitButton .dijitButtonNode {
+    min-width: 30px;
+    border: 1px solid #4178BE; 
+	background: none;
+}
+
+.navLayoutRefreshTheme .icmToolbar .toolbarContainer .dijitButtonNode {
+    margin: 2px;
+    border: 1px solid #4178BE;  
+	background: none;
+}
+
+.navLayoutRefreshTheme .dj_webkit .oneui .dijitDropDownButton .dijitButtonNode, .navLayoutRefreshTheme .dj_webkit  .oneui .dijitComboButton .dijitButtonNode{
+    padding-top: 5px;
+	padding-bottom: 4px;
+    border: 1px solid #4178BE;
+	background: none;
+}
+
+.navLayoutRefreshTheme .icmvnext  .ecmContentList .toolbarArea  .toolbar .ecmContentListToolbar .toolbarContent  .toolbarButtonArea .toolbarContainer .dijitButtonNode {
+    margin: 2px;
+    border: 1px solid #4178BE;
+	background: none;
+}
+
+.oneui.ecm.navLayoutRefreshTheme .dijitTabContainerTop-tabs .dijitTab {
+	border: none;
+	padding-left: 6px;
+    padding-right: 6px;
+}
+
+.oneui.ecm.navLayoutRefreshTheme .dijitTabContainerTop-tabs .dijitTabChecked {
+	border-bottom: 2px solid blue ! important;
+	top: 0px !important;
+	padding-left: 6px;
+    padding-right: 6px;
+}
+
+.oneui.ecm.navLayoutRefreshTheme .dijitTab {
+	background-color: white;
+}
+
+.navLayoutRefreshTheme .icmvnext .casePage_ltr {
+	display:none;
+}
+
+.navLayoutRefreshTheme .dijitTabContainerTop-tabs {
+	border-bottom: none;
+}
+
+.navLayoutRefreshTheme .oneui .dijitTabContainerTop-tabs .dijitTabContent {
+	border: none;
+}
+
+
+
+.navLayoutRefreshTheme .pvrPropertyLabel {
+	font-size: x-small;
+}
+
+
+
+.navLayoutRefreshTheme .pvrPropertyEditor .pvrTextBoxEditor .dijitTextBox input {
+	color: blue;
+}
+
+.oneui.navLayoutRefreshTheme .pvrPropertyEditor .pvrDateTimeTextBoxEditor .dijitComboBox .dijitInputField .dijitInputInner {
+	color: blue;
+}
+
+// css for other PVR editors
+.navLayoutRefreshTheme .pvrCheckBoxEditor,
+.navLayoutRefreshTheme .pvrCheckBoxListEditor,
+.navLayoutRefreshTheme .pvrNumberTextBoxEditor,
+.navLayoutRefreshTheme .pvrRadioButtonSetEditor,
+.navLayoutRefreshTheme .pvrStaticTextEditor,
+.navLayoutRefreshTheme .pvrSelectEditor,
+.navLayoutRefreshTheme .pvrNumberSpinnerEditor,
+.navLayoutRefreshTheme .pvrCheckBoxSelectEditor {
+}
+
+
+.oneui.navLayoutRefreshTheme .pvrPropertyEditor .dijitTextArea,
+.oneui.navLayoutRefreshTheme .pvrPropertyEditor .pvrDropDownEditor,
+.oneui.navLayoutRefreshTheme .pvrPropertyEditor .pvrDropDownEditor,
+.oneui.navLayoutRefreshTheme .pvrPropertyEditor .dijitInputField .dijitInputInner {
+	color:blue !important;
+	font-size: small;
+}
+
+.navLayoutRefreshTheme .icmvnext .icmflyoutSelector .dijitButtonNode {
+	border-bottom: none ! important;
+}
+
+
+
+
+.navLayoutRefreshTheme .pvrLayoutInner {
+	background-color: #eeeeee;
+	display: block;
+	margin: 0 !important;
+	padding: 1 !important;
+} 
+
+.navLayoutRefreshTheme .ecmLaunchBarContainer .launchBarButtonAreaTop {
+	height: 45px;
+}
+
+
+.navLayoutRefreshTheme .ecmContentList .magazineView .title {
+    font-size: 1em;
+    margin-bottom: 0px;
+    font-weight: bold;
+    color: #000;
+}
+
+.navLayoutRefreshTheme .ecmContentList .magazineView .contentExtra label,
+.navLayoutRefreshTheme .ecmContentList .magazineView .content label {
+    font-size: 11px !important;
+    color: #666;
+}
+
+.navLayoutRefreshTheme .ecmContentList .magazineView .content .value,
+.navLayoutRefreshTheme .ecmContentList .magazineView .contentExtra .value {
+    margin-bottom: 2px;
+    font-weight: normal;
+    font-size: 11px !important;
+    color: #666 !important;
+} 
+
+
+.oneui .icmPropertiesContent .dijitTabPaneWrapper,
+.oneui .icmPropertiesContent .dijitTabContainerTop-tabs,
+.oneui .icmPropertiesContent .dijitTabContainerBottom-tabs,
+.oneui .icmPropertiesContent .dijitTabContainerLeft-tabs,
+.oneui .icmPropertiesContent .dijitTabContainerRight-tabs {
+    background: white;
+} 
+
+.oneui .icmPropertiesContent .dijitTabPaneWrapper,
+.oneui .icmPropertiesContent .dijitTabContainerTop-tabs,
+.oneui .icmPropertiesContent .dijitTabContainerBottom-tabs,
+.oneui .icmPropertiesContent .dijitTabContainerLeft-tabs,
+.oneui .icmPropertiesContent .dijitTabContainerRight-tabs {
+    border: none;
+}
+
+.icmPropertiesContent .pvrLayoutInner {
+    background: #eeeeee;
+}
+
+
